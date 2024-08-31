@@ -18,12 +18,23 @@ But take Twitter or Reddit for example, users are constrained to creating their 
 No! The idea is that one use may register for john@foobar.com but with that sole account john may access other Socialbox instances and interact on them without ever telling lol.com or any other foreign instance what John's password is. For example, if john@foobar.com authenticates to lol.com, it's up to lol.com to verify if john is actually john from foobar.com by talking to foobar.com directly, this way lol.com can verify that john from foobar.com is actually john.
 
 ---
+
+## Table of contents
+
+- [[README]] (*You are here!*)
+ - Limits
+	 - [[UUID Standard]]
+- Object Structures
+	- [[Entity]]
+		- [[User]]
+
+---
 ## License
 
  Copyright (C) 2024 Socialbox Team
  Copyright (C) 2022-2024 Nosial Technologies
   
-    Permission is granted to copy, distribute and/or modify this document
+    Permission is granted to copy, distribute an[]()d/or modify this document
     under the terms of the GNU Free Documentation License, Version 1.3
     or any later version published by the Free Software Foundation;
     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
