@@ -4,9 +4,8 @@ This project is the Socialbox standard documentation, this project is intended t
 
 Socialbox is a decentralized platform for hosting social media instances, enabling users to register/authenticate on various instances and communicate with other users or communities across different instances without relying on a centralized server. This model aims to replace traditional services like Email, Reddit, and Twitter, allowing users to create communities for private, internal, or public purposes and engage in peer-to-peer communication, even if they are on different servers.
 
-![[decenteralized.png]]
-
-![[peer2peer.png]]
+![Decentralized](images/decenteralized.png)
+![Peer to Peer](images/peer2peer.png)
 
 ## Why use Socialbox?
 

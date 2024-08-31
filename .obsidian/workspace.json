@@ -20,6 +20,26 @@
             }
           },
           {
+            "id": "0a03bdc66ad83565",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "images/peer2peer.png"
+              }
+            }
+          },
+          {
+            "id": "4fa11e1e52778ecd",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "images/decenteralized.png"
+              }
+            }
+          },
+          {
             "id": "4dda4790c32a28a9",
             "type": "leaf",
             "state": {
@@ -158,15 +178,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "adb4950c2df9ccfd",
+  "active": "18385a150e34cecc",
   "lastOpenFiles": [
-    "Limits/UUID Standard.md",
+    "images/decenteralized.png",
+    "images",
+    "images/peer2peer.png",
     "README.md",
+    "Limits/UUID Standard.md",
     "LICENSE.md",
     "Pasted image 20240831154905.png",
     "Graphics",
-    "peer2peer.png",
-    "decenteralized.png",
     "Object Structures/Entity/User.md",
     "Object Structures/Entity.md",
     "Object Structures/Entity",
