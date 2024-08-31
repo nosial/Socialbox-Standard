@@ -11,8 +11,24 @@
             "id": "18385a150e34cecc",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "Limits/UUID Standard.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "4dda4790c32a28a9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "LICENSE.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +97,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Limits/UUID Standard.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +114,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Limits/UUID Standard.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +136,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Limits/UUID Standard.md"
+              }
             }
           }
         ]
@@ -140,6 +160,12 @@
   },
   "active": "18385a150e34cecc",
   "lastOpenFiles": [
+    "README.md",
+    "LICENSE.md",
+    "Pasted image 20240831154905.png",
+    "Graphics",
+    "Graphics/peer2peer.png",
+    "Graphics/decenteralized.png",
     "Object Structures/Entity/User.md",
     "Object Structures/Entity.md",
     "Object Structures/Entity",
