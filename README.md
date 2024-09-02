@@ -59,6 +59,7 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
     * [Response Object](#response-object)
     * [Error Response Object](#error-response-object)
 * [Error Codes](#error-codes)
+  * [HTTP Status Codes](#http-status-codes)
   * [-1xxx: RPC Errors](#-1xxx-rpc-errors)
   * [-2xxx: Server Errors](#-2xxx-server-errors)
 <!-- TOC -->
@@ -103,6 +104,8 @@ standards. Below are the modifications made to the JSON-RPC 2.0 specification:
   string can be used, it is recommended to use CRC32 hex encoded strings for the request ID.
 - Flattened the `error` object in the response object to include the error code and message directly under separate
   fields instead of nesting them under the `error` object.
+- Utilize HTTP status codes to indicate the status of the HTTP request-response cycle. For more details, refer to the
+  "HTTP Status Codes" section under [Error Codes](#error-codes).
 
 ### Notification & Request-Response Communication
 
@@ -212,6 +215,24 @@ The fields in the error response object are as follows:
 Error codes are globally defined codes that represent the type of error that occurred during a method call. The error
 codes are categorized by the first digit, which represents the error category, followed by digits indicating the specific
 error. The following are the error categories and their respective error codes:
+
+
+## HTTP Status Codes
+
+HTTP status codes indicate the status of the HTTP request-response cycle. These response codes do not reflect the status
+of the method call(s) but rather the status of the request or response itself, independent of the method call(s).
+
+The client should first check the HTTP status code before parsing the response body. If the status code is not 200,
+the client should not parse the response body, as it will contain a non-JSON encoded error message. For example,
+if the status code is 400, the response body will contain a message like "Bad Request," which the client should
+display to the user as the error message.
+
+| Code | Status       | Description                                                                            |
+|------|--------------|----------------------------------------------------------------------------------------|
+| 200  | OK           | The RPC request was successful.                                                        |
+| 400  | Bad Request  | The RPC request was invalid or missing required fields.                                |
+| 500  | Server Error | An internal server error occurred during the RPC process or the server is unavailable. |
+
 
 ## -1xxx: RPC Errors
 
