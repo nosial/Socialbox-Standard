@@ -55,6 +55,10 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
   * [UUID v4](#uuid-v4)
   * [DNS Handshake](#dns-handshake)
   * [Peer Address](#peer-address)
+    * [User Address](#user-address)
+    * [Server Address](#server-address)
+    * [Reserved Usernames](#reserved-usernames)
+    * [Regex Pattern (PCRE)](#regex-pattern-pcre)
   * [RPC Communication](#rpc-communication)
     * [Notification & Request-Response Communication](#notification--request-response-communication)
     * [Request Object](#request-object)
@@ -67,7 +71,6 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
 <!-- TOC -->
 
 ------------------------------------------------------------------------------------------------------------------------
-
 
 # Specifications
 
@@ -129,6 +132,38 @@ This record indicates that the Socialbox instance is hosted on the subdomain soc
 address stays consistent as john@example.com. This is because clients always resolve the main domain to find the TXT
 record, which provides the URL of the Socialbox instance.
 
+  > TODO: Should specify username and domain name restrictions, such as length, character set, etc. (?)
+
+### User Address
+
+A user address is a peer address that identifies a user associated with a Socialbox instance. The user address format
+consists of a username the domain name to which the user's account is registered, for example, *john@example.com*
+
+### Server Address
+
+A server address is a strict peer address that is similar a regular user address but instead the username is always
+`host` and the domain name is the domain name of the server, for example, *host@example.com* indicates that the server
+itself is the peer.
+
+### Reserved Usernames
+
+Certain usernames are reserved and cannot be used by users to register accounts. The following usernames are reserved:
+
+- `host`: Reserved for server addresses.
+- `admin`: Reserved for administrative purposes.
+- `root`: Reserved for the root user.
+- `system`: Reserved for system-related tasks.
+- `anonymous`: Reserved for anonymous users.
+- `guest`: Reserved for guest users.
+- `support`: Reserved for support-related tasks.
+
+### Regex Pattern (PCRE)
+
+The following regex pattern can be used to validate a peer address:
+
+```regex
+^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+```
 
 ## RPC Communication
 
@@ -254,6 +289,7 @@ The fields in the error response object are as follows:
 | `error`   | `String`  | Yes      | Method not found | The error message.                                     |
 | `code`    | `Integer` | Yes      | 0                | The error code.                                        |
 
+------------------------------------------------------------------------------------------------------------------------
 
 # Error Codes
 

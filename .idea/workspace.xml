@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18345731-10ed-4927-8692-8685f20e33be" name="Changes" comment="Updated TOC">
+    <list default="true" id="18345731-10ed-4927-8692-8685f20e33be" name="Changes" comment="Added Peer Address section">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,7 +146,7 @@
       <option name="presentableId" value="Default" />
       <updated>1725301232290</updated>
       <workItem from="1725301233351" duration="4877000" />
-      <workItem from="1725312281181" duration="1883000" />
+      <workItem from="1725312281181" duration="2648000" />
     </task>
     <task id="LOCAL-00001" summary="Nothing ever went wrong with plain-old markdown, right?">
       <option name="closed" value="true" />
@@ -243,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725318323694</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Added Peer Address section">
+      <option name="closed" value="true" />
+      <created>1725319221672</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1725319221672</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,6 +283,7 @@
     <MESSAGE value="Corrected Error tables as messages itself can be descriptive, but the code remains the same" />
     <MESSAGE value="Updated TOC" />
     <MESSAGE value="Add DNS Handshake section to README" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add DNS Handshake section to README" />
+    <MESSAGE value="Added Peer Address section" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Peer Address section" />
   </component>
 </project>
