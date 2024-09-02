@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7789d02f-8adc-400d-8827-901b6f4a2994" name="Changes" comment="Changed entire project to use Writerside instead." />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="InstanceColorv3">
+    <option name="map">
+      <map>
+        <entry key="$PROJECT_DIR$/Writerside/in.tree">
+          <value>
+            <ColorState>
+              <option name="customOrder" value="1" />
+              <option name="first">
+                <RgbState>
+                  <option name="blue" value="60" />
+                  <option name="darkBlue" value="60" />
+                  <option name="darkGreen" value="68" />
+                  <option name="darkRed" value="206" />
+                  <option name="green" value="68" />
+                  <option name="red" value="206" />
+                </RgbState>
+              </option>
+              <option name="second">
+                <RgbState>
+                  <option name="blue" value="65" />
+                  <option name="darkBlue" value="65" />
+                  <option name="darkGreen" value="126" />
+                  <option name="darkRed" value="231" />
+                  <option name="green" value="126" />
+                  <option name="red" value="231" />
+                </RgbState>
+              </option>
+            </ColorState>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/Writerside/s.tree">
+          <value>
+            <ColorState>
+              <option name="customOrder" value="2" />
+              <option name="first">
+                <RgbState>
+                  <option name="blue" value="225" />
+                  <option name="darkBlue" value="225" />
+                  <option name="darkGreen" value="149" />
+                  <option name="darkRed" value="56" />
+                  <option name="green" value="149" />
+                  <option name="red" value="56" />
+                </RgbState>
+              </option>
+              <option name="second">
+                <RgbState>
+                  <option name="blue" value="234" />
+                  <option name="darkBlue" value="234" />
+                  <option name="darkGreen" value="197" />
+                  <option name="darkRed" value="81" />
+                  <option name="green" value="197" />
+                  <option name="red" value="81" />
+                </RgbState>
+              </option>
+            </ColorState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Writerside.Socialbox HTML.executor": "Run",
+    "git-widget-placeholder": "master"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Socialbox HTML" type="StardustRunConfiguration" factoryName="save-as-zip">
+      <option name="folderPath" value="$PROJECT_DIR$" />
+      <option name="instanceId" value="s" />
+      <option name="instanceName" value="Socialbox" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changed entire project to use Writerside instead." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed entire project to use Writerside instead." />
+  </component>
+</project>
