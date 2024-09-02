@@ -243,7 +243,7 @@ display to the user as the error message.
 RPC errors are errors that occur during the remote procedure call (RPC) process. These errors are related to the
 communication between the client and server and the method invocation process.
 
-| Code  | Error Message      | Description                                                                 |
+| Code  | Reason             | Description                                                                 |
 |-------|--------------------|-----------------------------------------------------------------------------|
 | -1000 | Invalid Request    | The request object is invalid or missing required fields.                   |
 | -1001 | Method not found   | The requested method does not exist on the server.                          |
@@ -254,7 +254,7 @@ communication between the client and server and the method invocation process.
 
 Server errors are errors that occur on the server-side during the method invocation process.
 
-| Code  | Error Message      | Description                                                                                       |
+| Code  | Reason             | Description                                                                                       |
 |-------|--------------------|---------------------------------------------------------------------------------------------------|
 | -2000 | Internal Error     | An internal server error occurred during the method invocation process.                           |
 | -2001 | Server Unavailable | The server is unavailable and cannot process the request, usually due to maintenance or downtime. |
