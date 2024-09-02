@@ -11,8 +11,8 @@ centralized server. This model aims to replace traditional services like Email, 
 to create communities for private, internal, or public purposes and engage in peer-to-peer communication, even if
 they are on different servers.
 
-![decentralized.png](images%2Fdecentralized.png)
-![peer2peer.png](images%2Fpeer2peer.png)
+![The illustration of how a Decentralized paradise should look like](images%2Fdecentralized.png "Decentralized Illustration")
+![How peers can talk to each other even when on different domains](images%2Fpeer2peer.png "Peer to Peer illustration")
 
 ## Why use Socialbox?
 
@@ -54,6 +54,13 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
 * [Specifications](#specifications)
   * [UUID v4](#uuid-v4)
   * [RPC Communication](#rpc-communication)
+    * [Notification & Request-Response Communication](#notification--request-response-communication)
+    * [Request Object](#request-object)
+    * [Response Object](#response-object)
+    * [Error Response Object](#error-response-object)
+* [Error Codes](#error-codes)
+  * [-1xxx: RPC Errors](#-1xxx-rpc-errors)
+  * [-2xxx: Server Errors](#-2xxx-server-errors)
 <!-- TOC -->
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -83,4 +90,146 @@ Source: [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier#
 
 ## RPC Communication
 
-To be completed...
+Socialbox employs JSON-RPC over HTTP for server-client communication. JSON-RPC is a stateless, lightweight remote
+procedure call (RPC) protocol. This implementation is based on the JSON-RPC 2.0 specification with certain modifications
+to meet the Socialbox standards. Below are the modifications made to the JSON-RPC 2.0 specification:
+
+- Removed the redundant `jsonrpc` field from the request object, as the protocol is already defined as JSON-RPC 2.0.
+- Revised error codes to align with the Socialbox standard. Error codes are categorized by the first digit, which
+  represents the error category, followed by digits indicating the specific error. For more details, refer to the
+  "RPC Errors" section under [Error Codes](#error-codes).
+- Request IDs use an 8-character long unique identifier instead of the regular integer. Although theoretically any
+  string can be used, it is recommended to use CRC32 hex encoded strings for the request ID.
+- Flattened the `error` object in the response object to include the error code and message directly under separate
+  fields instead of nesting them under the `error` object.
+
+### Notification & Request-Response Communication
+
+Notification requests are requests where the request object does not contain a request ID. The server processes these
+requests silently without sending a response. Notification requests are used for one-way communication where the client
+does not need a response from the server.
+
+If the client needs the results of a request, it must include a request ID in the request object. The server will then
+respond with a response object containing the request ID, allowing the client to match the response with the request.
+
+For example:
+
+```text
+SEND: {"id": "3bb935c6", "method": "subtract", "parameters": {"subtrahend": 23, "minuend": 42}}
+REC: {"id": "3bb935c6", "result": 19}
+```
+
+In this example, the client requests to subtract 23 from 42 and includes a request ID in the request object. The server
+processes the request and responds with the result of 19 and the request ID. The client can use the request ID to match
+the response with the request.
+
+When the client sends multiple method calls within a single request, each method call must have a unique request ID.
+The server will respond with a response object for each method call containing the respective request ID and will omit
+responses for requests lacking a request ID.
+
+For example:
+
+```text
+SEND: [
+  {"id": "3bb935c6", "method": "subtract", "parameters": {"subtrahend": 23, "minuend": 42}},
+  {"id": "3bb935c7", "method": "add", "parameters": {"addend1": 23, "addend2": 42}},
+  {"method": "multiply", "parameters": {"multiplicand": 23, "multiplier": 42}}
+]
+REC: [
+  {"id": "3bb935c6", "result": 19},
+  {"id": "3bb935c7", "result": 65}
+]
+```
+
+In this example, the client sends three method calls within one request, each with a unique request ID. The server
+processes the requests and responds with a response object for each method call containing its request ID. The server
+omits the response for the third method call as it does not contain a request ID.
+
+### Request Object
+
+A request object is a JSON object that contains the following fields:
+
+```json
+{
+  "id": "3bb935c6",
+  "method": "subtract",
+  "parameters": {"subtrahend": 23, "minuend": 42}
+}
+```
+
+The fields in the request object are as follows:
+
+| Name         | Type     | Required | Example                             | Description                                                         |
+|--------------|----------|----------|-------------------------------------|---------------------------------------------------------------------|
+| `id`         | `String` | No       | `3bb935c6`                          | Optional. The request ID, if omitted the request is a notification. |
+| `method`     | `String` | Yes      | subtract                            | The method to be invoked.                                           |
+| `parameters` | `Array`  | No       | `{"subtrahend": 23, "minuend": 42}` | Optional. The parameters to pass.                                   |
+
+
+### Response Object
+
+A response object is a JSON object that contains the following fields:
+
+```json
+{
+  "id": "3bb935c6",
+  "result": 19
+}
+```
+
+The fields in the response object are as follows:
+
+| Name     | Type     | Required | Example    | Description                                            |
+|----------|----------|----------|------------|--------------------------------------------------------|
+| `id`     | `String` | No       | `3bb935c6` | Optional. The request ID of the corresponding request. |
+| `result` | `Any`    | Yes      | 19         | The result of the method call.                         |
+
+
+### Error Response Object
+
+An error response object is a JSON object that contains the following fields:
+
+```json
+{
+  "id": "3bb935c6",
+  "error": "Method not found",
+  "code": 0
+}
+```
+
+The fields in the error response object are as follows:
+
+| Name      | Type      | Required | Example          | Description                                            |
+|-----------|-----------|----------|------------------|--------------------------------------------------------|
+| `id`      | `String`  | No       | `3bb935c6`       | Optional. The request ID of the corresponding request. |
+| `error`   | `String`  | Yes      | Method not found | The error message.                                     |
+| `code`    | `Integer` | Yes      | 0                | The error code.                                        |
+
+
+# Error Codes
+
+Error codes are globally defined codes that represent the type of error that occurred during a method call. The error
+codes are categorized by the first digit, which represents the error category, followed by digits indicating the specific
+error. The following are the error categories and their respective error codes:
+
+## -1xxx: RPC Errors
+
+RPC errors are errors that occur during the remote procedure call (RPC) process. These errors are related to the
+communication between the client and server and the method invocation process.
+
+| Code  | Error Message      | Description                                                                 |
+|-------|--------------------|-----------------------------------------------------------------------------|
+| -1000 | Invalid Request    | The request object is invalid or missing required fields.                   |
+| -1001 | Method not found   | The requested method does not exist on the server.                          |
+| -1002 | Invalid Parameters | The parameters passed to the method are invalid or missing required fields. |
+
+
+## -2xxx: Server Errors
+
+Server errors are errors that occur on the server-side during the method invocation process.
+
+| Code  | Error Message      | Description                                                                                       |
+|-------|--------------------|---------------------------------------------------------------------------------------------------|
+| -2000 | Internal Error     | An internal server error occurred during the method invocation process.                           |
+| -2001 | Server Unavailable | The server is unavailable and cannot process the request, usually due to maintenance or downtime. |
+
