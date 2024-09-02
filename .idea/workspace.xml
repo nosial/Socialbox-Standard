@@ -4,11 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7789d02f-8adc-400d-8827-901b6f4a2994" name="Changes" comment="Changed entire project to use Writerside instead." />
+    <list default="true" id="18345731-10ed-4927-8692-8685f20e33be" name="Changes" comment="Removed stuff">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/c.list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/cfg/buildprofiles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/images/decentralized.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/images/peer2peer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/s.tree" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/topics/LICENSE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/topics/RPC-Communication.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/topics/Speficiations.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/topics/UUID-v4.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/topics/starter-topic.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/v.list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Writerside/writerside.cfg" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="InstanceColorv3">
     <option name="map">
@@ -70,25 +91,62 @@
       </map>
     </option>
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2lWgQfEpxIfOsaEIDScN13jtcTJ" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+    <option name="showVisibilityIcons" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Writerside.Socialbox HTML.executor": "Run",
-    "git-widget-placeholder": "master"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "master",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": [
+      "C:/Users/Netkas/WritersideProjects/socialbox-standard/Writerside/topics/LICENSE.md",
+      "C:/Users/Netkas/WritersideProjects/socialbox-standard/Writerside/topics/RPC-Communication.md",
+      "C:/Users/Netkas/WritersideProjects/socialbox-standard/Writerside/topics/Speficiations.md",
+      "C:/Users/Netkas/WritersideProjects/socialbox-standard/Writerside/topics/UUID-v4.md",
+      "C:/Users/Netkas/WritersideProjects/socialbox-standard/Writerside/topics/starter-topic.md"
+    ]
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="Socialbox HTML" type="StardustRunConfiguration" factoryName="save-as-zip">
-      <option name="folderPath" value="$PROJECT_DIR$" />
-      <option name="instanceId" value="s" />
-      <option name="instanceName" value="Socialbox" />
-      <method v="2" />
-    </configuration>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PS-242.21829.154" />
+        <option value="bundled-php-predefined-a98d8de5180a-4d9f4c849d09-com.jetbrains.php.sharedIndexes-PS-242.21829.154" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="18345731-10ed-4927-8692-8685f20e33be" name="Changes" comment="Removed stuff" />
+      <created>1725301232290</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725301232290</updated>
+      <workItem from="1725301233351" duration="16000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Changed entire project to use Writerside instead." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed entire project to use Writerside instead." />
+    <MESSAGE value="Removed stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed stuff" />
   </component>
 </project>
