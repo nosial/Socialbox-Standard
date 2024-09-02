@@ -90,9 +90,10 @@ Source: [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier#
 
 ## RPC Communication
 
-Socialbox employs JSON-RPC over HTTP for server-client communication. JSON-RPC is a stateless, lightweight remote
-procedure call (RPC) protocol. This implementation is based on the JSON-RPC 2.0 specification with certain modifications
-to meet the Socialbox standards. Below are the modifications made to the JSON-RPC 2.0 specification:
+Socialbox employs JSON-RPC over HTTP for server-client & server-server communication. JSON-RPC is a stateless,
+lightweight remote procedure call (RPC) protocol. This implementation is based on the JSON-RPC 2.0 specification
+with certain modifications  to meet the Socialbox standards. Below are the modifications made to the JSON-RPC 2.0
+specification:
 
 - Removed the redundant `jsonrpc` field from the request object, as the protocol is already defined as JSON-RPC 2.0.
 - Revised error codes to align with the Socialbox standard. Error codes are categorized by the first digit, which
