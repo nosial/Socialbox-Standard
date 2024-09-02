@@ -202,7 +202,7 @@ https://socialbox.example.com/
 ```
 
 > You may use any subdomain name for the RPC endpoint, but the DNS TXT record should be placed in the main domain's DNS
-  and should contain the correct URL of the RPC endpoint.
+  and should contain the correct subdomain of the RPC endpoint.
 
 Sub-Endpoints are not supported, the RPC endpoint URL **should not** contain any path or query parameter such as
 
