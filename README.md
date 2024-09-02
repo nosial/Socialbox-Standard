@@ -54,6 +54,7 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
 * [Specifications](#specifications)
   * [UUID v4](#uuid-v4)
   * [DNS Handshake](#dns-handshake)
+  * [Peer Address](#peer-address)
   * [RPC Communication](#rpc-communication)
     * [Notification & Request-Response Communication](#notification--request-response-communication)
     * [Request Object](#request-object)
@@ -104,6 +105,29 @@ example.com.  IN  TXT  "socialbox=socialbox.example.com"
 Here, socialbox is the key, and the value is the URL of the Socialbox instance. The client resolves the main domain to
 retrieve the TXT record, which then provides the URL of the Socialbox server.The client uses this URL to establish a
 connection to the Socialbox server. This process allows the client to dynamically discover the server URL.
+
+
+## Peer Address
+
+A peer address uniquely identifies a peer associated with a Socialbox instance, resembling a traditional email address
+format, where a username and domain are separated by an @ symbol. Both the username and domain are case-insensitive,
+and the domain must be a valid domain name. A typical peer address looks like this:
+
+```text
+john@example.com
+```
+
+If a Socialbox instance is hosted on a subdomain, such as socialbox.example.com, the peer address format does not change
+and remains tied to the main domain. For example, if example.com is the main domain, a DNS TXT record should be added to
+the main domain's DNS settings in the following format:
+
+```text
+example.com.  IN  TXT  "socialbox=socialbox.example.com"
+```
+
+This record indicates that the Socialbox instance is hosted on the subdomain socialbox.example.com, while the peer
+address stays consistent as john@example.com. This is because clients always resolve the main domain to find the TXT
+record, which provides the URL of the Socialbox instance.
 
 
 ## RPC Communication

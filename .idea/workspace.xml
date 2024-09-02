@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18345731-10ed-4927-8692-8685f20e33be" name="Changes" comment="Corrected Error tables as messages itself can be descriptive, but the code remains the same">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="18345731-10ed-4927-8692-8685f20e33be" name="Changes" comment="Updated TOC">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,6 +17,16 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Add DNS Handshake section to README" />
+        <option name="rewordedMessage" value="Add DNS Handshake section to README" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="91a8e8ae8b2e282b32e7a8d32975b1b4b6ac4b07" />
   </component>
   <component name="InstanceColorv3">
     <option name="map">
@@ -136,7 +145,7 @@
       <option name="presentableId" value="Default" />
       <updated>1725301232290</updated>
       <workItem from="1725301233351" duration="4877000" />
-      <workItem from="1725312281181" duration="918000" />
+      <workItem from="1725312281181" duration="1883000" />
     </task>
     <task id="LOCAL-00001" summary="Nothing ever went wrong with plain-old markdown, right?">
       <option name="closed" value="true" />
@@ -210,11 +219,46 @@
       <option name="project" value="LOCAL" />
       <updated>1725305307476</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Add DNS Handshake section to README">
+      <option name="closed" value="true" />
+      <created>1725318291419</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1725318291419</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Updated TOC">
+      <option name="closed" value="true" />
+      <created>1725318318359</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1725318318359</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Updated TOC">
+      <option name="closed" value="true" />
+      <created>1725318323694</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1725318323694</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Removed stuff" />
@@ -228,6 +272,8 @@
     <MESSAGE value="Add HTTP status codes section as part of the RPC implementation" />
     <MESSAGE value="Added footnote for RPC errors under RPC Communication &gt; Notification &amp; Request-Response communication" />
     <MESSAGE value="Corrected Error tables as messages itself can be descriptive, but the code remains the same" />
-    <option name="LAST_COMMIT_MESSAGE" value="Corrected Error tables as messages itself can be descriptive, but the code remains the same" />
+    <MESSAGE value="Updated TOC" />
+    <MESSAGE value="Add DNS Handshake section to README" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add DNS Handshake section to README" />
   </component>
 </project>
