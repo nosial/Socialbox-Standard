@@ -149,6 +149,10 @@ In this example, the client sends three method calls within one request, each wi
 processes the requests and responds with a response object for each method call containing its request ID. The server
 omits the response for the third method call as it does not contain a request ID.
 
+> In cases where the client sends malformed requests or the server encounters an RPC error, the server will not respond
+  with an RPC error response object. Instead, the server will respond with an HTTP status code indicating the error.
+  See HTTP Status Codes under [Error Codes](#error-codes) for more details.
+
 ### Request Object
 
 A request object is a JSON object that contains the following fields:
