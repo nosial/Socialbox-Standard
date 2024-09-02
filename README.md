@@ -60,10 +60,15 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
     * [Reserved Usernames](#reserved-usernames)
     * [Regex Pattern (PCRE)](#regex-pattern-pcre)
   * [RPC Communication](#rpc-communication)
+    * [How to host the RPC server](#how-to-host-the-rpc-server)
     * [Notification & Request-Response Communication](#notification--request-response-communication)
     * [Request Object](#request-object)
     * [Response Object](#response-object)
     * [Error Response Object](#error-response-object)
+* [Procedures](#procedures)
+  * [Establishing a connection](#establishing-a-connection)
+    * [Step 1: DNS Handshake](#step-1-dns-handshake)
+    * [Step 2: Establish Connection](#step-2-establish-connection)
 * [Error Codes](#error-codes)
   * [HTTP Status Codes](#http-status-codes)
   * [-1xxx: RPC Errors](#-1xxx-rpc-errors)
@@ -108,6 +113,8 @@ example.com.  IN  TXT  "socialbox=socialbox.example.com"
 Here, socialbox is the key, and the value is the URL of the Socialbox instance. The client resolves the main domain to
 retrieve the TXT record, which then provides the URL of the Socialbox server.The client uses this URL to establish a
 connection to the Socialbox server. This process allows the client to dynamically discover the server URL.
+
+The domain name is usually resolved from a given peer address.
 
 
 ## Peer Address
@@ -182,6 +189,38 @@ standards. Below are the modifications made to the JSON-RPC 2.0 specification:
   fields instead of nesting them under the `error` object.
 - Utilize HTTP status codes to indicate the status of the HTTP request-response cycle. For more details, refer to the
   "HTTP Status Codes" section under [Error Codes](#error-codes).
+
+### How to host the RPC server
+
+To host an RPC server, you must configure your domain name to have a subdomain that serves as the RPC endpoint for your
+Socialbox instance. For example, if your domain is example.com, you can host the RPC server on the subdomain 
+socialbox.example.com. The RPC server should be accessible via HTTPS, and the root URL should be the RPC endpoint. For
+example, the client would assume the RPC endpoint URL would look like this after preforming the [DNS Handshake](#dns-handshake):
+
+```text
+https://socialbox.example.com/
+```
+
+> You may use any subdomain name for the RPC endpoint, but the DNS TXT record should be placed in the main domain's DNS
+  and should contain the correct URL of the RPC endpoint.
+
+Sub-Endpoints are not supported, the RPC endpoint URL **should not** contain any path or query parameter such as
+
+```text
+
+```text
+ - https://socialbox.example.com/rpc
+ - https://socialbox.example.com/rpc/endpoint
+ - https://socialbox.example.com/?rpc
+ - https://socialbox.example.com/?api
+ etc...
+```
+
+To break it down in three easy steps, say we want to talk to the server where `john@example.com` is hosted:
+
+ 1. We resolve the domain name `example.com` to get the TXT record that contains the URL of the Socialbox instance.
+ 2. `example.com` resolves to `socialbox.example.com` which is the RPC endpoint.
+ 3. We assume the RPC endpoint URL is `https://socialbox.example.com/`
 
 ### Notification & Request-Response Communication
 
@@ -288,6 +327,39 @@ The fields in the error response object are as follows:
 | `id`      | `String`  | No       | `3bb935c6`       | Optional. The request ID of the corresponding request. |
 | `error`   | `String`  | Yes      | Method not found | The error message.                                     |
 | `code`    | `Integer` | Yes      | 0                | The error code.                                        |
+
+------------------------------------------------------------------------------------------------------------------------
+
+# Procedures
+
+Procedures as described in the standard are methods that a server & client must implement to ensure compatibility with
+other systems. These procedures are the core of the Socialbox standard and are required to be implemented by all
+Socialbox servers and clients, these procedures can range from how an connection is established to how a user is
+authenticated or how encryption is handled.
+
+## Establishing a connection
+
+When a client wants to connect to a Socialbox server, it must first perform a DNS handshake to discover the server URL.
+For this example, let's assume the server is hosted on the subdomain socialbox.example.com. The client identified as
+the peer `john@example.com` is trying to connect to the server to authenticate to it or even register an account if
+john doesn't have one.
+
+### Step 1: DNS Handshake
+
+The client takes the peer's address and extracts the domain name, in this case, `example.com`. The client then resolves
+the domain name to retrieve the TXT record that contains the URL of the Socialbox instance. The TXT record should be
+placed in the main domain's DNS records with the following format:
+
+```text
+example.com.  IN  TXT  "socialbox=socialbox.example.com"
+```
+
+For more details on the DNS handshake, refer to the [DNS Handshake](#dns-handshake) section under Specifications.
+
+### Step 2: Establish Connection
+
+Now the client figures out that the RPC endpoint for the Socialbox instance hosted under example.com is found at 
+`https://socialbox.example.com/`, the client then establishes a connection to the server using the URL. The client
 
 ------------------------------------------------------------------------------------------------------------------------
 
