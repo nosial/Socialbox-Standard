@@ -53,6 +53,7 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
   * [Table of contents](#table-of-contents)
 * [Specifications](#specifications)
   * [UUID v4](#uuid-v4)
+  * [DNS Handshake](#dns-handshake)
   * [RPC Communication](#rpc-communication)
     * [Notification & Request-Response Communication](#notification--request-response-communication)
     * [Request Object](#request-object)
@@ -87,6 +88,22 @@ possible version 4, variant 2 UUIDs (legacy GUIDs) because there is one less ran
 consumed for the variant.
 
 Source: [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))
+
+
+## DNS Handshake
+
+When a client wants to connect to a Socialbox server, it first needs to perform a DNS handshake to discover the server
+URL. Typically, the Socialbox server is hosted on a subdomain like socialbox.example.com. To determine this, the client
+must first resolve the main domain, example.com, and get a TXT record that contains the URL of the Socialbox instance.
+The required TXT record should be placed in the main domain’s DNS records with this format:
+
+```text
+example.com.  IN  TXT  "socialbox=socialbox.example.com"
+```
+
+Here, socialbox is the key, and the value is the URL of the Socialbox instance. The client resolves the main domain to
+retrieve the TXT record, which then provides the URL of the Socialbox server.The client uses this URL to establish a
+connection to the Socialbox server. This process allows the client to dynamically discover the server URL.
 
 
 ## RPC Communication
