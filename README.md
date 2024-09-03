@@ -117,7 +117,7 @@ example.com.  IN  TXT  "socialbox=socialbox.example.com"
 ```
 
 Here, socialbox is the key, and the value is the URL of the Socialbox instance. The client resolves the main domain to
-retrieve the TXT record, which then provides the URL of the Socialbox server.The client uses this URL to establish a
+retrieve the TXT record, which then provides the URL of the Socialbox server. The client uses this URL to establish a
 connection to the Socialbox server. This process allows the client to dynamically discover the server URL.
 
 The domain name is usually resolved from a given peer address.
@@ -405,6 +405,13 @@ Ping allows you to test the connection to the server, this method doesn't accept
 `true` as the result
 
  > Returns: Boolean (true)
+
+RPC Example:
+
+```text
+SEND: {"id": "3bb935c6", "method": "ping"}
+REC: {"id": "3bb935c6", "result": true}
+```
 
 
 ## Protected
