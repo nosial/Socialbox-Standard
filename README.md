@@ -64,6 +64,11 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
     * [Request Object](#request-object)
     * [Response Object](#response-object)
     * [Error Response Object](#error-response-object)
+* [Authentication](#authentication)
+  * [First-Level Authentication](#first-level-authentication)
+    * [Password (PASSWORD)](#password-password)
+  * [Second-Level authentication](#second-level-authentication)
+    * [Time-Based One-Time Password (TOTP)](#time-based-one-time-password-totp)
 * [Procedures](#procedures)
   * [Establishing a connection](#establishing-a-connection)
     * [Step 1: DNS Handshake](#step-1-dns-handshake)
@@ -328,6 +333,44 @@ The fields in the error response object are as follows:
 | `id`      | `String`  | No       | `3bb935c6`       | Optional. The request ID of the corresponding request. |
 | `error`   | `String`  | Yes      | Method not found | The error message.                                     |
 | `code`    | `Integer` | Yes      | 0                | The error code.                                        |
+
+------------------------------------------------------------------------------------------------------------------------
+
+# Authentication
+
+The Socialbox standard strives to be as flexiable as it can be, servers may implement all or some of the authentication
+methods described in this section. But a client must be expected to be able to handle all of these authentication methods
+to ensure compatibility with all servers.
+
+Authentication procedures are seperated to two levels, the first level is the initial authentication level where the user
+must use to at least authenticate to the server
+
+> TODO: Object structures must be defined & the authentication process must be explained
+
+## First-Level Authentication
+
+A first level authentication is always the first and initial method of auhthentication that the user can preform, there
+are multiple ways to handle authentication in the first-level but essentially this is the first step the user must take.
+
+### Password (PASSWORD)
+
+The most common way to authenticate a user is by using a password, the user must provide their password to authenticate
+to the server. The password must be hashed using `SHA512`. The server must be able to verify if the given hash of the
+password is correct.
+
+
+## Second-Level authentication
+
+A second level authentication is optional, this is what the server may ask the client to provide for additional security,
+second-level authentication is usually reserved for a two-step verification process if the user has enabled it and if or
+when the server requires it.
+
+### Time-Based One-Time Password (TOTP)
+
+Time-based One-Time Password (TOTP) is a second-level authentication method that generates a one-time password based on
+a shared secret key and the current time. The server and client must share a secret key to generate the one-time password.
+The client generates the one-time password using the secret key and the current time, which the server can verify to
+authenticate the user.
 
 ------------------------------------------------------------------------------------------------------------------------
 
