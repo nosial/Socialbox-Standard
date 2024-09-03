@@ -72,6 +72,7 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
 * [Methods](#methods)
   * [Core](#core)
   * [Public](#public)
+    * [Ping (`ping`)](#ping-ping)
   * [Protected](#protected)
   * [Internal](#internal)
 * [Error Codes](#error-codes)
@@ -396,6 +397,14 @@ establish a connection between the client and server and are necessary for the c
 ## Public
 
 Public methods are methods that are available to all peers without authentication, meaning that any peer can access.
+
+
+### Ping (`ping`)
+
+Ping allows you to test the connection to the server, this method doesn't accept any parameters and only returns
+`true` as the result
+
+ > Returns: Boolean (true)
 
 
 ## Protected
