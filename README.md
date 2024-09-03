@@ -361,7 +361,7 @@ placed in the main domain's DNS records with the following format:
 example.com.  IN  TXT  "socialbox=socialbox.example.com"
 ```
 
-For more details on the DNS handshake, refer to the [DNS Handshake](#dns-handshake) section under Specifications.
+For more details on the DNS handshake, refer to the [DNS Records](#dns-records) section under Specifications.
 Now we figured out that the Socialbox instance RPC endpoint is found at `https://socialbox.example.com/`.
 
  1. Client always assumes SSL/TLS is enabled, so the client will always connect to the server using HTTPS.
