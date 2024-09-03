@@ -24,23 +24,22 @@ different servers to communicate with each other.
 But take Twitter or Reddit for example, users are constrained to create their accounts or boards on that one and only
 platform, if Reddit or anyone on that platform doesn't like that board, they could very well take it down and make it
 inaccessible to many users. Even worse if Reddit goes down entirely! Socialbox aims to fix this to allow users to
-explore the internet as it once was without being tied to a centralized service, so for example john@foobar.com may be
-able to post on cats@lol.com and interact with other users that doesn't necessarily come from lol.com or foobar.com.
-john@foobar.com may also subscribe to these channels and or boards and receive daily updates from their favorite
+explore the internet as it once was without being tied to a centralized service, so for example <john@foobar.com> may be
+able to post on <cats@lol.com> and interact with other users that doesn't necessarily come from lol.com or foobar.com.
+<john@foobar.com> may also subscribe to these channels and or boards and receive daily updates from their favorite
 sources and communities.
 
 ## Wouldn't I need to create a lot of accounts?
 
-No! The idea is that one use may register for john@foobar.com but with that sole account john may access other
+No! The idea is that one use may register for <john@foobar.com> but with that sole account john may access other
 Socialbox instances and interact on them without ever telling lol.com or any other foreign instance what John's
-password is. For example, if john@foobar.com authenticates to lol.com, it's up to lol.com to verify if john is actually
+password is. For example, if <john@foobar.com> authenticates to lol.com, it's up to lol.com to verify if john is actually
 john from foobar.com by talking to foobar.com directly, this way lol.com can verify that john from foobar.com is
 actually john.
 
 ## License
 
 This project is licensed under GNU Free Documentation License v1.3, see the [LICENSE](LICENSE.md) file for details.
-
 
 ## Table of contents
 
@@ -89,7 +88,6 @@ Specifications are used to define exactly how each part of the Socialbox standar
 security & limitations. Servers & Clients alike are expected to follow these specification at it's core for the
 best results and compatibility with other systems.
 
-
 ## UUID v4
 
 Anything on the Socialbox world that needs to be uniquely identified with a random identifier must use the UUID V4
@@ -103,7 +101,6 @@ possible version 4, variant 2 UUIDs (legacy GUIDs) because there is one less ran
 consumed for the variant.
 
 Source: [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))
-
 
 ## DNS Records
 
@@ -121,7 +118,6 @@ retrieve the TXT record, which then provides the URL of the Socialbox server. Th
 connection to the Socialbox server. This process allows the client to dynamically discover the server URL.
 
 The domain name is usually resolved from a given peer address.
-
 
 ## Peer Address
 
@@ -142,7 +138,7 @@ example.com.  IN  TXT  "socialbox=socialbox.example.com"
 ```
 
 This record indicates that the Socialbox instance is hosted on the subdomain socialbox.example.com, while the peer
-address stays consistent as john@example.com. This is because clients always resolve the main domain to find the TXT
+address stays consistent as <john@example.com>. This is because clients always resolve the main domain to find the TXT
 record, which provides the URL of the Socialbox instance.
 
   > TODO: Should specify username and domain name restrictions, such as length, character set, etc. (?)
@@ -150,25 +146,25 @@ record, which provides the URL of the Socialbox instance.
 ### User Address
 
 A user address is a peer address that identifies a user associated with a Socialbox instance. The user address format
-consists of a username the domain name to which the user's account is registered, for example, *john@example.com*
+consists of a username the domain name to which the user's account is registered, for example, *<john@example.com>*
 
 ### Server Address
 
 A server address is a strict peer address that is similar a regular user address but instead the username is always
-`host` and the domain name is the domain name of the server, for example, *host@example.com* indicates that the server
+`host` and the domain name is the domain name of the server, for example, *<host@example.com>* indicates that the server
 itself is the peer.
 
 ### Reserved Usernames
 
 Certain usernames are reserved and cannot be used by users to register accounts. The following usernames are reserved:
 
-- `host`: Reserved for server addresses.
-- `admin`: Reserved for administrative purposes.
-- `root`: Reserved for the root user.
-- `system`: Reserved for system-related tasks.
-- `anonymous`: Reserved for anonymous users.
-- `guest`: Reserved for guest users.
-- `support`: Reserved for support-related tasks.
+* `host`: Reserved for server addresses.
+* `admin`: Reserved for administrative purposes.
+* `root`: Reserved for the root user.
+* `system`: Reserved for system-related tasks.
+* `anonymous`: Reserved for anonymous users.
+* `guest`: Reserved for guest users.
+* `support`: Reserved for support-related tasks.
 
 ### Regex Pattern (PCRE)
 
@@ -185,21 +181,21 @@ lightweight remote procedure call (RPC) protocol. This implementation is based o
 [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification) with certain modifications to meet the Socialbox
 standards. Below are the modifications made to the JSON-RPC 2.0 specification:
 
-- Removed the redundant `jsonrpc` field from the request object, as the protocol is already defined as JSON-RPC 2.0.
-- Revised error codes to align with the Socialbox standard. Error codes are categorized by the first digit, which
+* Removed the redundant `jsonrpc` field from the request object, as the protocol is already defined as JSON-RPC 2.0.
+* Revised error codes to align with the Socialbox standard. Error codes are categorized by the first digit, which
   represents the error category, followed by digits indicating the specific error. For more details, refer to the
   "RPC Errors" section under [Error Codes](#error-codes).
-- Request IDs use an 8-character long unique identifier instead of the regular integer. Although theoretically any
+* Request IDs use an 8-character long unique identifier instead of the regular integer. Although theoretically any
   string can be used, it is recommended to use CRC32 hex encoded strings for the request ID.
-- Flattened the `error` object in the response object to include the error code and message directly under separate
+* Flattened the `error` object in the response object to include the error code and message directly under separate
   fields instead of nesting them under the `error` object.
-- Utilize HTTP status codes to indicate the status of the HTTP request-response cycle. For more details, refer to the
+* Utilize HTTP status codes to indicate the status of the HTTP request-response cycle. For more details, refer to the
   "HTTP Status Codes" section under [Error Codes](#error-codes).
 
 ### How to host the RPC server
 
 To host an RPC server, you must configure your domain name to have a subdomain that serves as the RPC endpoint for your
-Socialbox instance. For example, if your domain is example.com, you can host the RPC server on the subdomain 
+Socialbox instance. For example, if your domain is example.com, you can host the RPC server on the subdomain
 socialbox.example.com. The RPC server should be accessible via HTTPS, and the root URL should be the RPC endpoint. For
 example, the client would assume the RPC endpoint URL would look like this after preforming the DNS Handshake, see
 [DNS Records](#dns-records) to see how this part is configured.
@@ -295,7 +291,6 @@ The fields in the request object are as follows:
 | `method`     | `String` | Yes      | subtract                            | The method to be invoked.                                           |
 | `parameters` | `Array`  | No       | `{"subtrahend": 23, "minuend": 42}` | Optional. The parameters to pass.                                   |
 
-
 ### Response Object
 
 A response object is a JSON object that contains the following fields:
@@ -313,7 +308,6 @@ The fields in the response object are as follows:
 |----------|----------|----------|------------|--------------------------------------------------------|
 | `id`     | `String` | No       | `3bb935c6` | Optional. The request ID of the corresponding request. |
 | `result` | `Any`    | Yes      | 19         | The result of the method call.                         |
-
 
 ### Error Response Object
 
@@ -336,6 +330,7 @@ The fields in the error response object are as follows:
 | `code`    | `Integer` | Yes      | 0                | The error code.                                        |
 
 ------------------------------------------------------------------------------------------------------------------------
+
 
 # Procedures
 
@@ -393,11 +388,9 @@ Core methods are methods that are required to be implemented by all servers and 
 and may include methods for authentication, registration, and other core functionalities. Core methods are used to
 establish a connection between the client and server and are necessary for the client to interact with the server.
 
-
 ## Public
 
 Public methods are methods that are available to all peers without authentication, meaning that any peer can access.
-
 
 ### Ping (`ping`)
 
@@ -413,13 +406,11 @@ SEND: {"id": "3bb935c6", "method": "ping"}
 REC: {"id": "3bb935c6", "result": true}
 ```
 
-
 ## Protected
 
 Public methods are the opposite of public methods, these methods require authentication to access them. These methods
 are used to perform operations that require the peer to be authenticated, such as posting messages, creating communities,
 and other operations related to the peer's account or peer's interactivity with the server.
-
 
 ## Internal
 
@@ -428,16 +419,13 @@ These methods require authentication, and it's up to the server to determine if 
 permissions to carry out administrative operations. If the server offers an alternative way for administrators to manage
 it, these methods should remain entirely optional.
 
-
 ------------------------------------------------------------------------------------------------------------------------
-
 
 # Error Codes
 
 Error codes are globally defined codes that represent the type of error that occurred during a method call. The error
 codes are categorized by the first digit, which represents the error category, followed by digits indicating the specific
 error. The following are the error categories and their respective error codes:
-
 
 ## HTTP Status Codes
 
@@ -455,7 +443,6 @@ display to the user as the error message.
 | 400  | Bad Request  | The RPC request was invalid or missing required fields.                                |
 | 500  | Server Error | An internal server error occurred during the RPC process or the server is unavailable. |
 
-
 ## -1xxx: RPC Errors
 
 RPC errors are errors that occur during the remote procedure call (RPC) process. These errors are related to the
@@ -467,7 +454,6 @@ communication between the client and server and the method invocation process.
 | -1001 | Method not found   | The requested method does not exist on the server.                          |
 | -1002 | Invalid Parameters | The parameters passed to the method are invalid or missing required fields. |
 
-
 ## -2xxx: Server Errors
 
 Server errors are errors that occur on the server-side during the method invocation process.
@@ -476,4 +462,3 @@ Server errors are errors that occur on the server-side during the method invocat
 |-------|--------------------|---------------------------------------------------------------------------------------------------|
 | -2000 | Internal Error     | An internal server error occurred during the method invocation process.                           |
 | -2001 | Server Unavailable | The server is unavailable and cannot process the request, usually due to maintenance or downtime. |
-
