@@ -368,6 +368,7 @@ Now we figured out that the Socialbox instance RPC endpoint is found at `https:/
 
 ### Step 2: Establish Connection
 
+ > TODO: To be written
 
 ------------------------------------------------------------------------------------------------------------------------
 
