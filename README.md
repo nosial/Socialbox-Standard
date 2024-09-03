@@ -53,7 +53,7 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
   * [Table of contents](#table-of-contents)
 * [Specifications](#specifications)
   * [UUID v4](#uuid-v4)
-  * [DNS Handshake](#dns-handshake)
+  * [DNS Records](#dns-records)
   * [Peer Address](#peer-address)
     * [User Address](#user-address)
     * [Server Address](#server-address)
@@ -104,7 +104,7 @@ consumed for the variant.
 Source: [Wikipedia](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random))
 
 
-## DNS Handshake
+## DNS Records
 
 When a client wants to connect to a Socialbox server, it first needs to perform a DNS handshake to discover the server
 URL. Typically, the Socialbox server is hosted on a subdomain like socialbox.example.com. To determine this, the client
@@ -200,7 +200,8 @@ standards. Below are the modifications made to the JSON-RPC 2.0 specification:
 To host an RPC server, you must configure your domain name to have a subdomain that serves as the RPC endpoint for your
 Socialbox instance. For example, if your domain is example.com, you can host the RPC server on the subdomain 
 socialbox.example.com. The RPC server should be accessible via HTTPS, and the root URL should be the RPC endpoint. For
-example, the client would assume the RPC endpoint URL would look like this after preforming the [DNS Handshake](#dns-handshake):
+example, the client would assume the RPC endpoint URL would look like this after preforming the DNS Handshake, see
+[DNS Records](#dns-records) to see how this part is configured.
 
 ```text
 https://socialbox.example.com/
