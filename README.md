@@ -69,6 +69,11 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
   * [Establishing a connection](#establishing-a-connection)
     * [Step 1: DNS Handshake](#step-1-dns-handshake)
     * [Step 2: Establish Connection](#step-2-establish-connection)
+* [Methods](#methods)
+  * [Core](#core)
+  * [Public](#public)
+  * [Protected](#protected)
+  * [Internal](#internal)
 * [Error Codes](#error-codes)
   * [HTTP Status Codes](#http-status-codes)
   * [-1xxx: RPC Errors](#-1xxx-rpc-errors)
@@ -355,13 +360,59 @@ example.com.  IN  TXT  "socialbox=socialbox.example.com"
 ```
 
 For more details on the DNS handshake, refer to the [DNS Handshake](#dns-handshake) section under Specifications.
+Now we figured out that the Socialbox instance RPC endpoint is found at `https://socialbox.example.com/`.
+
+ 1. Client always assumes SSL/TLS is enabled, so the client will always connect to the server using HTTPS.
+ 2. CLient always assumes the RPC endpoint URL is the root URL of the server, so all requests will be sent to the root
+    URL of the server.
 
 ### Step 2: Establish Connection
 
-Now the client figures out that the RPC endpoint for the Socialbox instance hosted under example.com is found at 
-`https://socialbox.example.com/`, the client then establishes a connection to the server using the URL. The client
 
 ------------------------------------------------------------------------------------------------------------------------
+
+# Methods
+
+Methods are seperated into three categories that servers could or must implement, the category type dictates this.
+
+| Category    | Server Required | Client Required | Description                                                                                                           |
+|-------------|-----------------|-----------------|-----------------------------------------------------------------------------------------------------------------------|
+| `core`      | Yes             | Yes             | Core methods are required to be implemented by all servers and clients.                                               |
+| `public`    | Yes             | Yes             | Public methods are methods that are available to all users without authentication.                                    |
+| `protected` | Yes             | Yes             | Protected methods are methods that requires authentication to access them.                                            |
+| `internal`  | No              | No              | Internal methods are methods reserved for administrative operations to the server if the peer is allowed to use them. |
+
+To break down these categories in more detail, this section is going to describe their purposes:
+
+## Core
+
+Core methods are methods that are required to be implemented by all servers and clients. These methods are essential
+and may include methods for authentication, registration, and other core functionalities. Core methods are used to
+establish a connection between the client and server and are necessary for the client to interact with the server.
+
+
+## Public
+
+Public methods are methods that are available to all peers without authentication, meaning that any peer can access.
+
+
+## Protected
+
+Public methods are the opposite of public methods, these methods require authentication to access them. These methods
+are used to perform operations that require the peer to be authenticated, such as posting messages, creating communities,
+and other operations related to the peer's account or peer's interactivity with the server.
+
+
+## Internal
+
+Internal methods are optional, restricted functions that enable a peer to perform administrative tasks on the server.
+These methods require authentication, and it's up to the server to determine if the authenticated peer has the necessary
+permissions to carry out administrative operations. If the server offers an alternative way for administrators to manage
+it, these methods should remain entirely optional.
+
+
+------------------------------------------------------------------------------------------------------------------------
+
 
 # Error Codes
 
