@@ -64,16 +64,29 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
     * [Request Object](#request-object)
     * [Response Object](#response-object)
     * [Error Response Object](#error-response-object)
+  * [Cryptography](#cryptography)
+    * [Key Generation](#key-generation)
+    * [Signing and Signature Verification](#signing-and-signature-verification)
+    * [Temporary Signature & Verification](#temporary-signature--verification)
+    * [Encryption and Decryption](#encryption-and-decryption)
+    * [Methods](#methods)
+      * [generateKeyPair()](#generatekeypair)
+      * [signContent(content: String, privateKey: String): String](#signcontentcontent-string-privatekey-string-string)
+      * [verifyContent(content: String, signature: String, publicKey: String): Boolean](#verifycontentcontent-string-signature-string-publickey-string-boolean)
+      * [temporarySignContent(content: String, privateKey: String): String](#temporarysigncontentcontent-string-privatekey-string-string)
+    * [verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean](#verifytemporarysignaturecontent-string-signature-string-publickey-string-frames-integer-boolean)
+      * [encryptContent(content: String, publicKey: String): String](#encryptcontentcontent-string-publickey-string-string)
+      * [decryptContent(ciphertext: String, privateKey: String): String](#decryptcontentciphertext-string-privatekey-string-string)
 * [Authentication](#authentication)
   * [First-Level Authentication](#first-level-authentication)
-    * [Password (PASSWORD)](#password-password)
+    * [Password (LOGIN)](#password-login)
   * [Second-Level authentication](#second-level-authentication)
-    * [Time-Based One-Time Password (TOTP)](#time-based-one-time-password-totp)
+    * [TOTP (Time-based One-Time Password)](#totp-time-based-one-time-password)
 * [Procedures](#procedures)
   * [Establishing a connection](#establishing-a-connection)
     * [Step 1: DNS Handshake](#step-1-dns-handshake)
     * [Step 2: Establish Connection](#step-2-establish-connection)
-* [Methods](#methods)
+* [Methods](#methods-1)
   * [Core](#core)
   * [Public](#public)
     * [Ping (`ping`)](#ping-ping)
@@ -334,6 +347,217 @@ The fields in the error response object are as follows:
 | `error`   | `String`  | Yes      | Method not found | The error message.                                     |
 | `code`    | `Integer` | Yes      | 0                | The error code.                                        |
 
+
+## Cryptography
+
+Cryptography is a crucial part of the Socialbox standard, it serves many purposes such as session integrity to prevent
+session hijacking, data integrity to prevent data tampering, and confidentiality to prevent data eavesdropping. To keep
+things simple, every Socialbox client & server must implement the same cryptographic methods to ensure compatibility
+with other systems. Mainly, the Socialbox standard uses the following cryptographic methods:
+
+* **RSA**: Used for asymmetric encryption and decryption.
+* **SHA256**: Used for hashing data and generating secure signatures.
+* **Base64 Encoding**: All binary data (such as keys, signatures, and encrypted data) is encoded into Base64 for safe transmission.
+
+### Key Generation
+
+Key generation is the process of generating cryptographic keys for encryption and decryption. In Socialbox, RSA keys
+are used for asymmetric encryption and decryption. The key generation process involves generating a public key and a
+private key. The public key can be shared with others to encrypt/verify data, while the private key is kept secret and
+used to decrypt/sign data. These are the following conditions for key generation:
+
+* **Key Size**: The key size must be 2048 bits.
+* **Algorithm**: The algorithm used for key generation must be RSA.
+* **Key Encoding** Base64 encoded DER format.
+* **Private Key** Must be stored in Base64 encoding using [PKCS#8](https://docs.openssl.org/master/man1/openssl-pkcs8/) standard.
+* **Public Key** Must be stored in Base64 encoding using [X.509](https://docs.openssl.org/master/man7/x509/) standard.
+
+Example key generation using OpenSSL:
+
+```bash
+# Generate a private key
+openssl genpkey -algorithm RSA -out private.der -pkeyopt rsa_keygen_bits:2048 -outform DER
+
+# Extract the public key from the private key
+openssl rsa -in private.der -inform DER -pubout -out public.der -outform DER
+
+# Convert the keys to Base64 encoding (no PEM headers)
+openssl base64 -in private.der -out private_base64.txt
+openssl base64 -in public.der -out public_base64.txt
+```
+
+You should get two files, private_base64.txt and public_base64.txt, containing the private and public keys, respectively, 
+in Base64 encoding without PEM headers.
+
+```text
+# private_base64.txt
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKg...
+
+# public_base64.txt
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQ...
+```
+
+### Signing and Signature Verification
+
+Signing is the process of generating a digital signature for a message using a private key. The signature can be
+verified by others using the corresponding public key to ensure the message's integrity and authenticity. In Socialbox,
+signing and signature verification are used to ensure the integrity of data exchanged between peers. The following
+conditions apply to signing and signature verification:
+
+* **Algorithm**: RSA with SHA256 hash function (SHA256withRSA)
+* **Padding**: PKCS#1 v1.5 padding for signatures.
+* **Input**: UTF-8 encoded string as the content to be signed.
+* **Output**: Base64 encoded signature.
+
+Example signing and signature verification using OpenSSL:
+
+```bash
+# Decode the Base64 private key to DER format
+openssl base64 -d -in private_base64.txt -out private.der
+
+# Sign the data using the DER-formatted private key
+echo -n "Hello, World!" | openssl dgst -sha256 -sign private.der -out signature.bin
+
+# Decode the Base64 public key to DER format
+openssl base64 -d -in public_base64.txt -out public.der
+
+# Verify the signature using the DER-formatted public key
+echo -n "Hello, World!" | openssl dgst -sha256 -verify public.der -signature signature.bin
+
+# Output: Verified OK
+```
+
+ > Note: In this example, the produced signature is binary data, but if you want to transmit the signature over the
+   network, you must encode it using Base64 encoding.
+
+### Temporary Signature & Verification
+
+Temporary signatures work the same way as regular signatures, but the keypair used to sign the data is temporary and
+is only used for a block of time, usually within 60 seconds. Temporary signatures are used to ensure the integrity of
+data exchanged between peers within a short period. The following conditions apply to temporary signatures:
+
+* **Algorithm**: RSA with SHA256 hash function (SHA256withRSA)
+* **Padding**: PKCS#1 v1.5 for signatures.
+* **Time Limit**: The signature must be verified within X seconds.
+* **Input**: UTF-8 encoded string as the content, plus the current timestamp divided by the time block.
+* **Output**: Base64-encoded signature with the time component included.
+
+Implementation example, take these parameters for example
+
+* `content`: (String) The data to sign
+* `signature` (String) The signature to verify
+* `publicKey` (String) The public key to verify the signature
+* `frames` (Integer) The number of frames the signature is valid for, by default the value is `1`
+
+Time-blocks are calculated by dividing the current Unix timestamp by 60 seconds and rounding it down to the nearest
+integer. For example, If the current Unix timestamp is `1725903098`, to calculate the time block we divide it by 60 
+seconds and round it down to the nearest integer, the result is `28765051`, frames is the number of frames the signature
+is valid for before it,  for example, if the signature is valid for 60 seconds, the frames would be `1`. If the frame
+value is `2`, the signature is valid for 120 seconds, and so on.
+
+```python
+import time
+
+def verify_temporary_signature(content, signature, publicKey, frames=1):
+    # Calculate the time block
+    timeBlock = int(time.time() / 60)
+
+    # Verify the signature
+    for i in range(frames):
+        # Generate the temporary signature
+        tempSignature = sign(content + str(timeBlock - i))
+
+        # Verify the temporary signature
+        if verify(tempSignature, publicKey, content + str(timeBlock - i)):
+            return True
+
+    return False
+```
+
+For the rest of the signature process, remains normal; the only difference is that the content is appended with the
+time block separated by a `|` character, for example:
+
+```text
+{content}|{timeBlock}
+```
+
+or in the example above:
+
+```text
+Hello, World!|28765051
+```
+
+
+### Encryption and Decryption
+
+Encryption is the process of converting plaintext data into ciphertext using a public key, while decryption is the
+process of converting ciphertext back into plaintext using the corresponding private key. In Socialbox, encryption and
+decryption are used to ensure the confidentiality of data exchanged between peers. The following conditions apply to
+encryption and decryption:
+
+* **Algorithm**: RSA with OAEP (Optimal Asymmetric Encryption Padding)
+* **Hash**: SHA256
+* **Input**: UTF-8 encoded string as the content to be encrypted.
+* **Output**: Base64 encoded ciphertext.
+
+Example encryption and decryption using OpenSSL:
+  
+```bash
+# Encrypt the data
+echo -n "Hello, World!" | openssl rsautl -encrypt -oaep -pubin -inkey public_base64.txt -out ciphertext.bin
+```
+
+To decrypt the ciphertext, you must use the private key:
+
+```bash
+# Decrypt the data
+openssl rsautl -decrypt -oaep -inkey private_base64.txt -in ciphertext.bin
+
+```
+
+ > Note: In this example, the produced ciphertext is binary data, but if you want to transmit the ciphertext over the
+   network, you must encode it using Base64 encoding.
+
+### Methods
+
+The following methods should be implemented by all Socialbox servers and clients to ensure compatibility with other.
+
+#### generateKeyPair()
+
+![generateKeyPair Diagram](images/generateKeyPair.png "generateKeyPair Diagram")
+Generates a new RSA key pair for encryption and decryption, returns the public and private keys in Base64 encoding.
+
+#### signContent(content: String, privateKey: String): String
+
+![signContent Diagram](images/signContent.png "signContent Diagram")
+Signs the content using the private key and returns the signature in Base64 encoding.
+
+#### verifyContent(content: String, signature: String, publicKey: String): Boolean
+
+![verifyContent Diagram](images/verifyContent.png "verifyContent Diagram")
+Verifies the signature of the content using the public key and returns true if the signature is valid, false otherwise.
+
+#### temporarySignContent(content: String, privateKey: String): String
+
+![temporarySignContent Diagram](images/temporarySignContent.png "temporarySignContent Diagram")
+Signs the content using a temporary private key and returns the temporary signature in Base64 encoding.
+
+### verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean
+
+![verifyTemproarySignature Diagram](images/verifyTemproarySignature.png "verifyTemporarySignature")
+Verifies the temporary signature of the content using the public key and returns true if the signature is valid
+within the specified time frame.
+
+#### encryptContent(content: String, publicKey: String): String
+
+![encryptContent Diagram](images/encryptContent.png "encryptContent Diagram")
+Encrypts the content using the public key and returns the ciphertext in Base64 encoding.
+
+#### decryptContent(ciphertext: String, privateKey: String): String
+
+![decryptContent Diagram](images/decryptContent.png "decryptContent Diagram")
+Decrypts the ciphertext using the private key and returns the plaintext content.
+
 ------------------------------------------------------------------------------------------------------------------------
 
 # Authentication
@@ -345,14 +569,14 @@ to ensure compatibility with all servers.
 Authentication procedures are seperated to two levels, the first level is the initial authentication level where the user
 must use to at least authenticate to the server
 
-> TODO: Object structures must be defined & the authentication process must be explained
+ > TODO: Object structures must be defined & the authentication process must be explained
 
 ## First-Level Authentication
 
 A first level authentication is always the first and initial method of auhthentication that the user can preform, there
 are multiple ways to handle authentication in the first-level but essentially this is the first step the user must take.
 
-### Password (PASSWORD)
+### Password (LOGIN)
 
 The most common way to authenticate a user is by using a password, the user must provide their password to authenticate
 to the server. The password must be hashed using `SHA512`. The server must be able to verify if the given hash of the
@@ -365,7 +589,7 @@ A second level authentication is optional, this is what the server may ask the c
 second-level authentication is usually reserved for a two-step verification process if the user has enabled it and if or
 when the server requires it.
 
-### Time-Based One-Time Password (TOTP)
+### TOTP (Time-based One-Time Password)
 
 Time-based One-Time Password (TOTP) is a second-level authentication method that generates a one-time password based on
 a shared secret key and the current time. The server and client must share a secret key to generate the one-time password.
