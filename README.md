@@ -69,14 +69,16 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
     * [Signing and Signature Verification](#signing-and-signature-verification)
     * [Temporary Signature & Verification](#temporary-signature--verification)
     * [Encryption and Decryption](#encryption-and-decryption)
+    * [Error Handling](#error-handling)
     * [Methods](#methods)
       * [generateKeyPair()](#generatekeypair)
       * [signContent(content: String, privateKey: String): String](#signcontentcontent-string-privatekey-string-string)
       * [verifyContent(content: String, signature: String, publicKey: String): Boolean](#verifycontentcontent-string-signature-string-publickey-string-boolean)
       * [temporarySignContent(content: String, privateKey: String): String](#temporarysigncontentcontent-string-privatekey-string-string)
-    * [verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean](#verifytemporarysignaturecontent-string-signature-string-publickey-string-frames-integer-boolean)
+      * [verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean](#verifytemporarysignaturecontent-string-signature-string-publickey-string-frames-integer-boolean)
       * [encryptContent(content: String, publicKey: String): String](#encryptcontentcontent-string-publickey-string-string)
       * [decryptContent(ciphertext: String, privateKey: String): String](#decryptcontentciphertext-string-privatekey-string-string)
+    * [Example Implementations](#example-implementations)
 * [Authentication](#authentication)
   * [First-Level Authentication](#first-level-authentication)
     * [Password (LOGIN)](#password-login)
@@ -350,21 +352,24 @@ The fields in the error response object are as follows:
 
 ## Cryptography
 
-Cryptography is a crucial part of the Socialbox standard, it serves many purposes such as session integrity to prevent
-session hijacking, data integrity to prevent data tampering, and confidentiality to prevent data eavesdropping. To keep
-things simple, every Socialbox client & server must implement the same cryptographic methods to ensure compatibility
-with other systems. Mainly, the Socialbox standard uses the following cryptographic methods:
+Cryptography is a crucial part of the Socialbox standard. It serves many purposes such as session integrity to prevent
+session hijacking, data integrity to prevent data tampering, and confidentiality to prevent data eavesdropping. Every
+Socialbox client & server must implement the same cryptographic methods to ensure compatibility with other systems.
+Mainly, the Socialbox standard uses the following cryptographic methods:
 
 * **RSA**: Used for asymmetric encryption and decryption.
 * **SHA256**: Used for hashing data and generating secure signatures.
 * **Base64 Encoding**: All binary data (such as keys, signatures, and encrypted data) is encoded into Base64 for safe transmission.
 
+ > Note: Base64 encoding is necessary because binary data cannot be safely transmitted in certain contexts like URLs or
+   JSON. Base64 converts binary data into a text-safe format.
+
 ### Key Generation
 
-Key generation is the process of generating cryptographic keys for encryption and decryption. In Socialbox, RSA keys
-are used for asymmetric encryption and decryption. The key generation process involves generating a public key and a
-private key. The public key can be shared with others to encrypt/verify data, while the private key is kept secret and
-used to decrypt/sign data. These are the following conditions for key generation:
+Key generation is the process of generating cryptographic keys for encryption and decryption. In Socialbox, RSA keys are
+used for asymmetric encryption and decryption. The key generation process involves generating a public key and a private
+key. The public key can be shared with others to encrypt/verify data, while the private key is kept secret and used to
+decrypt/sign data. These are the following conditions for key generation:
 
 * **Key Size**: The key size must be 2048 bits.
 * **Algorithm**: The algorithm used for key generation must be RSA.
@@ -399,10 +404,9 @@ MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQ...
 
 ### Signing and Signature Verification
 
-Signing is the process of generating a digital signature for a message using a private key. The signature can be
-verified by others using the corresponding public key to ensure the message's integrity and authenticity. In Socialbox,
-signing and signature verification are used to ensure the integrity of data exchanged between peers. The following
-conditions apply to signing and signature verification:
+Signing is the process of generating a digital signature for a message using a private key. The signature can be verified
+by others using the corresponding public key to ensure the message's integrity and authenticity. In Socialbox, signing
+and signature verification are used to ensure the integrity of data exchanged between peers.
 
 * **Algorithm**: RSA with SHA256 hash function (SHA256withRSA)
 * **Padding**: PKCS#1 v1.5 padding for signatures.
@@ -432,9 +436,10 @@ echo -n "Hello, World!" | openssl dgst -sha256 -verify public.der -signature sig
 
 ### Temporary Signature & Verification
 
-Temporary signatures work the same way as regular signatures, but the keypair used to sign the data is temporary and
-is only used for a block of time, usually within 60 seconds. Temporary signatures are used to ensure the integrity of
-data exchanged between peers within a short period. The following conditions apply to temporary signatures:
+Temporary signatures work similarly to regular signatures, but the keypair used to sign the data is temporary and only
+valid for a limited time (typically 60 seconds). This feature ensures the integrity of data exchanged between peers
+within a short time window, adding protection against replay attacks. To ensure time synchronization, developers should
+use NTP (Network Time Protocol).
 
 * **Algorithm**: RSA with SHA256 hash function (SHA256withRSA)
 * **Padding**: PKCS#1 v1.5 for signatures.
@@ -490,10 +495,9 @@ Hello, World!|28765051
 
 ### Encryption and Decryption
 
-Encryption is the process of converting plaintext data into ciphertext using a public key, while decryption is the
-process of converting ciphertext back into plaintext using the corresponding private key. In Socialbox, encryption and
-decryption are used to ensure the confidentiality of data exchanged between peers. The following conditions apply to
-encryption and decryption:
+Encryption is the process of converting plaintext data into ciphertext using a public key, while decryption converts
+ciphertext back into plaintext using the corresponding private key. In Socialbox, encryption and decryption ensure the
+confidentiality of data exchanged between peers.
 
 * **Algorithm**: RSA with OAEP (Optimal Asymmetric Encryption Padding)
 * **Hash**: SHA256
@@ -517,6 +521,13 @@ openssl rsautl -decrypt -oaep -inkey private_base64.txt -in ciphertext.bin
 
  > Note: In this example, the produced ciphertext is binary data, but if you want to transmit the ciphertext over the
    network, you must encode it using Base64 encoding.
+ >
+
+### Error Handling
+
+For real-world implementations, error handling should be a priority. For example, signature verification and decryption
+can fail if the data is tampered with, keys don’t match, or the data has expired. Ensure that invalid signatures or
+decryption errors are caught and handled appropriately to avoid security vulnerabilities
 
 ### Methods
 
@@ -525,12 +536,13 @@ The following methods should be implemented by all Socialbox servers and clients
 #### generateKeyPair()
 
 ![generateKeyPair Diagram](images/generateKeyPair.png "generateKeyPair Diagram")
-Generates a new RSA key pair for encryption and decryption, returns the public and private keys in Base64 encoding.
+Generates a new RSA key pair for encryption and decryption, returning the public and private keys in Base64 encoding.
 
 #### signContent(content: String, privateKey: String): String
 
 ![signContent Diagram](images/signContent.png "signContent Diagram")
 Signs the content using the private key and returns the signature in Base64 encoding.
+The content is expected to be a UTF-8 encoded string.
 
 #### verifyContent(content: String, signature: String, publicKey: String): Boolean
 
@@ -542,7 +554,7 @@ Verifies the signature of the content using the public key and returns true if t
 ![temporarySignContent Diagram](images/temporarySignContent.png "temporarySignContent Diagram")
 Signs the content using a temporary private key and returns the temporary signature in Base64 encoding.
 
-### verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean
+#### verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean
 
 ![verifyTemproarySignature Diagram](images/verifyTemproarySignature.png "verifyTemporarySignature")
 Verifies the temporary signature of the content using the public key and returns true if the signature is valid
@@ -557,6 +569,20 @@ Encrypts the content using the public key and returns the ciphertext in Base64 e
 
 ![decryptContent Diagram](images/decryptContent.png "decryptContent Diagram")
 Decrypts the ciphertext using the private key and returns the plaintext content.
+
+### Example Implementations
+
+This standard provides examples of how to implement the cryptographic methods using OpenSSL or any other cryptographic
+library that supports RSA encryption and decryption. The examples demonstrate how to generate RSA key pairs, sign and
+verify content, and encrypt and decrypt data using RSA.
+
+ > Note: The examples provided are for demonstration purposes only. Developers should use a secure cryptographic library
+   and follow best practices to ensure the security of their implementations.
+ 
+ - [Python](examples/cryptography.py)
+ - [Java](examples/Cryptography.java)
+ - [PHP](examples/cryptography.php)
+ - [C](examples/cryptography.c)
 
 ------------------------------------------------------------------------------------------------------------------------
 
