@@ -44,61 +44,85 @@ This project is licensed under GNU Free Documentation License v1.3, see the [LIC
 ## Table of contents
 
 <!-- TOC -->
-* [About Socialbox](#about-socialbox)
-  * [What's Socialbox?](#whats-socialbox)
-  * [Why use Socialbox?](#why-use-socialbox)
-  * [Wouldn't I need to create a lot of accounts?](#wouldnt-i-need-to-create-a-lot-of-accounts)
-  * [License](#license)
-  * [Table of contents](#table-of-contents)
-* [Specifications](#specifications)
-  * [UUID v4](#uuid-v4)
-  * [DNS Records](#dns-records)
-  * [Peer Address](#peer-address)
-    * [User Address](#user-address)
-    * [Server Address](#server-address)
-    * [Reserved Usernames](#reserved-usernames)
-    * [Regex Pattern (PCRE)](#regex-pattern-pcre)
-  * [RPC Communication](#rpc-communication)
-    * [How to host the RPC server](#how-to-host-the-rpc-server)
-    * [Notification & Request-Response Communication](#notification--request-response-communication)
-    * [Request Object](#request-object)
-    * [Response Object](#response-object)
-    * [Error Response Object](#error-response-object)
-  * [Cryptography](#cryptography)
-    * [Key Generation](#key-generation)
-    * [Signing and Signature Verification](#signing-and-signature-verification)
-    * [Temporary Signature & Verification](#temporary-signature--verification)
-    * [Encryption and Decryption](#encryption-and-decryption)
-    * [Error Handling](#error-handling)
-    * [Methods](#methods)
-      * [generateKeyPair()](#generatekeypair)
-      * [signContent(content: String, privateKey: String): String](#signcontentcontent-string-privatekey-string-string)
-      * [verifyContent(content: String, signature: String, publicKey: String): Boolean](#verifycontentcontent-string-signature-string-publickey-string-boolean)
-      * [temporarySignContent(content: String, privateKey: String): String](#temporarysigncontentcontent-string-privatekey-string-string)
-      * [verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean](#verifytemporarysignaturecontent-string-signature-string-publickey-string-frames-integer-boolean)
-      * [encryptContent(content: String, publicKey: String): String](#encryptcontentcontent-string-publickey-string-string)
-      * [decryptContent(ciphertext: String, privateKey: String): String](#decryptcontentciphertext-string-privatekey-string-string)
-    * [Example Implementations](#example-implementations)
-* [Authentication](#authentication)
-  * [First-Level Authentication](#first-level-authentication)
-    * [Password (LOGIN)](#password-login)
-  * [Second-Level authentication](#second-level-authentication)
-    * [TOTP (Time-based One-Time Password)](#totp-time-based-one-time-password)
-* [Procedures](#procedures)
-  * [Establishing a connection](#establishing-a-connection)
-    * [Step 1: DNS Handshake](#step-1-dns-handshake)
-    * [Step 2: Establish Connection](#step-2-establish-connection)
-* [Methods](#methods-1)
-  * [Core](#core)
-  * [Public](#public)
-    * [Ping (`ping`)](#ping-ping)
-  * [Protected](#protected)
-  * [Internal](#internal)
-* [Error Codes](#error-codes)
-  * [HTTP Status Codes](#http-status-codes)
-  * [-1xxx: RPC Errors](#-1xxx-rpc-errors)
-  * [-2xxx: Server Errors](#-2xxx-server-errors)
+- [About Socialbox](#about-socialbox)
+  - [What's Socialbox?](#whats-socialbox)
+  - [Why use Socialbox?](#why-use-socialbox)
+  - [Wouldn't I need to create a lot of accounts?](#wouldnt-i-need-to-create-a-lot-of-accounts)
+  - [License](#license)
+  - [Table of contents](#table-of-contents)
+- [Guidelines](#guidelines)
+  - [Backwards Compatibility](#backwards-compatibility)
+    - [Deprecation](#deprecation)
+- [Specifications](#specifications)
+  - [UUID v4](#uuid-v4)
+  - [DNS Records](#dns-records)
+  - [Peer Address](#peer-address)
+    - [User Address](#user-address)
+    - [Server Address](#server-address)
+    - [Reserved Usernames](#reserved-usernames)
+    - [Regex Pattern (PCRE)](#regex-pattern-pcre)
+  - [RPC Communication](#rpc-communication)
+    - [How to host the RPC server](#how-to-host-the-rpc-server)
+    - [Notification \& Request-Response Communication](#notification--request-response-communication)
+    - [Request Object](#request-object)
+    - [Response Object](#response-object)
+    - [Error Response Object](#error-response-object)
+  - [Cryptography](#cryptography)
+    - [Key Generation](#key-generation)
+    - [Signing and Signature Verification](#signing-and-signature-verification)
+    - [Temporary Signature \& Verification](#temporary-signature--verification)
+    - [Encryption and Decryption](#encryption-and-decryption)
+    - [Error Handling](#error-handling)
+    - [Methods](#methods)
+      - [generateKeyPair()](#generatekeypair)
+      - [signContent(content: String, privateKey: String): String](#signcontentcontent-string-privatekey-string-string)
+      - [verifyContent(content: String, signature: String, publicKey: String): Boolean](#verifycontentcontent-string-signature-string-publickey-string-boolean)
+      - [temporarySignContent(content: String, privateKey: String): String](#temporarysigncontentcontent-string-privatekey-string-string)
+      - [verifyTemporarySignature(content: String, signature: String, publicKey: String, frames: Integer): Boolean](#verifytemporarysignaturecontent-string-signature-string-publickey-string-frames-integer-boolean)
+      - [encryptContent(content: String, publicKey: String): String](#encryptcontentcontent-string-publickey-string-string)
+      - [decryptContent(ciphertext: String, privateKey: String): String](#decryptcontentciphertext-string-privatekey-string-string)
+    - [Example Implementations](#example-implementations)
+- [Authentication](#authentication)
+  - [First-Level Authentication](#first-level-authentication)
+    - [Password (LOGIN)](#password-login)
+  - [Second-Level authentication](#second-level-authentication)
+    - [TOTP (Time-based One-Time Password)](#totp-time-based-one-time-password)
+- [Procedures](#procedures)
+  - [Establishing a connection](#establishing-a-connection)
+    - [Step 1: DNS Handshake](#step-1-dns-handshake)
+    - [Step 2: Establish Connection](#step-2-establish-connection)
+- [Methods](#methods-1)
+  - [Core](#core)
+  - [Public](#public)
+    - [Ping (`ping`)](#ping-ping)
+  - [Protected](#protected)
+  - [Internal](#internal)
+- [Error Codes](#error-codes)
+  - [HTTP Status Codes](#http-status-codes)
+  - [-1xxx: RPC Errors](#-1xxx-rpc-errors)
+  - [-2xxx: Server Errors](#-2xxx-server-errors)
 <!-- TOC -->
+
+------------------------------------------------------------------------------------------------------------------------
+
+# Guidelines
+
+The guideline section is used to outline guidelines that the standard & project must adhere to, these guidelines are
+placed here to ensure that future generations of this specification would remain backwards compatible with at least
+up to the first specification version of this project, additionally this section is meant to outline what the project
+is intended to be used for and what it's not used for.
+
+## Backwards Compatibility
+
+This specification just like any other project out there, would undergo changes as needed, whether or not these changes
+are breaking changes or not, the project must always remain backwards compatible with the first version of the project.
+
+### Deprecation
+
+In the case a method, procedure or object is deprecated, good servers should still continue to support these deprecated
+methods, one way to do this is to allow the server to convert the deprecated method to the new method in the background
+while retaining the same result as the deprecated method. To consider a method deprecated, the specification must provide
+a way as explained in the deprecation comments on how to use the same method call with the newly replaced method.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -371,8 +395,10 @@ used for asymmetric encryption and decryption. The key generation process involv
 key. The public key can be shared with others to encrypt/verify data, while the private key is kept secret and used to
 decrypt/sign data. These are the following conditions for key generation:
 
-* **Key Size**: The key size must be 2048 bits.
 * **Algorithm**: The algorithm used for key generation must be RSA.
+* **Key Size**: The key size must be 2048 bits.
+* **Padding**: The padding scheme used for encryption and decryption must be OAEP (Optimal Asymmetric Encryption Padding).
+* **Hash Function**: The hash function used for RSA encryption and decryption must be SHA-1.
 * **Key Encoding** Base64 encoded DER format.
 * **Private Key** Must be stored in Base64 encoding using [PKCS#8](https://docs.openssl.org/master/man1/openssl-pkcs8/) standard.
 * **Public Key** Must be stored in Base64 encoding using [X.509](https://docs.openssl.org/master/man7/x509/) standard.
@@ -500,7 +526,7 @@ ciphertext back into plaintext using the corresponding private key. In Socialbox
 confidentiality of data exchanged between peers.
 
 * **Algorithm**: RSA with OAEP (Optimal Asymmetric Encryption Padding)
-* **Hash**: SHA256
+* **Hash**: SHA-1 (Note: Previously, SHA-256 was specified, but for compatibility with OpenSSL, SHA-1 is used).
 * **Input**: UTF-8 encoded string as the content to be encrypted.
 * **Output**: Base64 encoded ciphertext.
 
@@ -509,13 +535,10 @@ Example encryption and decryption using OpenSSL:
 ```bash
 # Encrypt the data
 echo -n "Hello, World!" | openssl rsautl -encrypt -oaep -pubin -inkey public_base64.txt -out ciphertext.bin
-```
 
-To decrypt the ciphertext, you must use the private key:
-
-```bash
 # Decrypt the data
 openssl rsautl -decrypt -oaep -inkey private_base64.txt -in ciphertext.bin
+
 
 ```
 
